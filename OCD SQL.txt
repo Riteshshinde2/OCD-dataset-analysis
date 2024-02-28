@@ -1,0 +1,58 @@
+    --DATA CLEANING AND EXPLORATION--
+								   ----------------------------------
+select  count(patientID) as total_patient
+from [dbo].[ocd_dataset]
+
+
+--------------------------------------------------------------------------------------------------------------
+       --M VS F 
+select gender , COUNT('patientID') as patient_count
+
+from ocd_dataset
+group by gender
+order by patient_count
+
+--------------------------------------------------------------------------------------------------------------
+      --M VS F IN PERCENTAGE
+ SELECT
+ SUM(CASE WHEN gender = 'female' THEN 1 ELSE 0 END) AS count_female,
+ SUM(CASE WHEN gender = 'male' THEN 1 ELSE 0 END) AS count_male,
+ SUM(CASE WHEN gender = 'female' THEN 1 ELSE 0 END)*100/round (count(gender),2)female_percentge,
+ SUM(CASE WHEN gender = 'male' THEN 1 ELSE 0 END)*100/round (count(gender),2) male_percentage
+FROM ocd_dataset;
+
+--------------------------------------------------------------------------------------------------------------
+     --OBSESSIONS BY ETHNICITY
+SELECT [Ethnicity],count(ethnicity) total_patient,
+avg([Y-BOCSScoreObsessions]) as average_Obsessions
+from ocd_dataset
+group by Ethnicity
+--------------------------------------------------------------------------------------------------------------
+     --YOY DIAGNOSED PEOPLE
+SELECT year([OCDDiagnosisDate]) as year, COUNT(PATIENTid) as NoOfPatient
+FROM ocd_dataset
+GROUP BY year([OCDDiagnosisDate])
+
+--------------------------------------------------------------------------------------------------------------
+       --what is most common obsession type and its average obsession score
+
+select  ([ObsessionType]) ,avg([Y-BOCSScoreObsessions]) as averageObsession,count(patientID) as patientCount
+
+from ocd_dataset
+group by   ([ObsessionType])
+
+--------------------------------------------------------------------------------------------------------------
+alter table ocd_dataset
+alter column age int
+
+
+select Avg(age)
+from ocd_dataset
+
+--------------------------------------------------------------------------------------------------------------
+
+select([MaritalStatus])
+, count(patientID) as NoOf Patient
+from ocd_dataset
+group by [MaritalStatus]
+
